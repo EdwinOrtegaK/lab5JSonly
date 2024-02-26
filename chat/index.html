@@ -24,7 +24,7 @@
             // Establece el estilo del cuerpo para usar display flex y direccionar columnas
             document.body.style.display = 'flex';
             document.body.style.flexDirection = 'column';
-            document.body.style.alignItems = 'center'; // Este podría limitar el ancho de los hijos, considera removerlo si no es necesario
+            document.body.style.alignItems = 'center'; 
             document.body.style.margin = '0';
             document.body.style.height = '100vh';
             document.body.style.fontFamily = "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif";
@@ -39,7 +39,7 @@
             messagesContainer.style.flexGrow = '1';
             messagesContainer.style.width = '100%';
             messagesContainer.style.backgroundColor = '#e5ddd5';
-            messagesContainer.style.height = 'calc(100vh - 120px)'; // Altura ajustada para dejar espacio al input y botones
+            messagesContainer.style.height = 'calc(100vh - 120px)';
             messagesContainer.style.boxSizing = 'border-box';
 
             // Ajustes del área de texto
@@ -185,7 +185,7 @@
             }
         });
         
-        // Obtén mensajes al cargar la página
+        // Obtiene mensajes al cargar la página
         getMessages();
 
         // Función para aplicar el tema
