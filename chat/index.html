@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+
 </head>
 <body>
     <ul id="messages"></ul>
@@ -19,32 +20,70 @@
         const buttonContainer = document.getElementById('buttonContainer')
 
         // Estilos aplicados con JavaScript
-        document.body.style.display = 'flex';
-        document.body.style.flexDirection = 'column';
-        document.body.style.alignItems = 'center';
-        document.body.style.marginTop = '20px';
+        document.addEventListener('DOMContentLoaded', function() {
+            // Establece el estilo del cuerpo para usar display flex y direccionar columnas
+            document.body.style.display = 'flex';
+            document.body.style.flexDirection = 'column';
+            document.body.style.alignItems = 'center'; // Este podría limitar el ancho de los hijos, considera removerlo si no es necesario
+            document.body.style.margin = '0';
+            document.body.style.height = '100vh';
+            document.body.style.fontFamily = "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif";
+            document.body.style.backgroundColor = '#e5ddd5';
 
-        ul.style.listStyleType = 'none';
-        ul.style.padding = '0';
-        ul.style.maxHeight = '300px';
-        ul.style.overflowY = 'scroll';
-        ul.style.width = '100%';
-        ul.style.maxWidth = '400px';
-        ul.style.border = '1px solid #ccc';
+            // Ajustes del contenedor de mensajes
+            var messagesContainer = document.getElementById('messages');
+            messagesContainer.style.listStyleType = 'none';
+            messagesContainer.style.padding = '20px';
+            messagesContainer.style.margin = '0';
+            messagesContainer.style.overflowY = 'auto';
+            messagesContainer.style.flexGrow = '1';
+            messagesContainer.style.width = '100%';
+            messagesContainer.style.backgroundColor = '#e5ddd5';
+            messagesContainer.style.height = 'calc(100vh - 120px)'; // Altura ajustada para dejar espacio al input y botones
+            messagesContainer.style.boxSizing = 'border-box';
 
-        t.style.width = '100%';
-        t.style.maxWidth = '400px';
-        t.style.marginTop = '10px';
+            // Ajustes del área de texto
+            var messageText = document.getElementById('messageText');
+            messageText.style.boxSizing = 'border-box';
+            messageText.style.width = '100%';
+            messageText.style.padding = '10px';
+            messageText.style.border = 'none';
+            messageText.style.margin = '0';
+            messageText.style.resize = 'none';
+            messageText.style.height = '50px';
+            messageText.style.fontSize = '16px';
 
-        buttonContainer.style.display = 'flex';
-        buttonContainer.style.justifyContent = 'space-between';
-        buttonContainer.style.width = '100%';
-        buttonContainer.style.maxWidth = '400px';
+            // Ajustes para el contenedor de botones
+            var buttonContainer = document.getElementById('buttonContainer');
+            buttonContainer.style.display = 'flex';
+            buttonContainer.style.justifyContent = 'space-between';
+            buttonContainer.style.width = '100%';
+            buttonContainer.style.margin = '0';
 
-        b.style.marginTop = '10px';
-        toggleThemeBtn.style.marginTop = '10px';
-
+            // Ajustes para los botones
+            var buttons = document.querySelectorAll('#buttonContainer button');
+            buttons.forEach(function(button) {
+                button.style.flexGrow = '1';
+                button.style.margin = '5px';
+                button.style.padding = '10px';
+                button.style.border = 'none';
+                button.style.borderRadius = '5px';
+                button.style.backgroundColor = '#075e54';
+                button.style.color = 'white';
+                button.style.fontSize = '16px';
+                button.style.cursor = 'pointer';
+            });
         
+            // Ajustes generales del body para simular el fondo de WhatsApp
+            document.body.style.display = 'flex';
+            document.body.style.flexDirection = 'column';
+            document.body.style.alignItems = 'center';
+            document.body.style.margin = '0';
+            document.body.style.height = '100vh';
+            document.body.style.fontFamily = "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif";
+            document.body.style.backgroundColor = '#e5ddd5';
+        });
+
         const getMessages = async () => {
             console.log('Fetching messages...');
             const isScrolledToBottom = ul.scrollHeight - ul.clientHeight <= ul.scrollTop + 1;
@@ -95,18 +134,18 @@
             
                 const textAfterLastLink = messageContent.slice(lastOffset);
                 fragment.appendChild(document.createTextNode(textAfterLastLink));
-            
+                
                 li.appendChild(fragment);
                 ul.appendChild(li);
             });
-        
+
+            styleMessageBubbles();
             if (isScrolledToBottom) {
                 ul.scrollTop = ul.scrollHeight;
             } else {
                 ul.scrollTop = scrollPosition;
             }
         };
-
 
         const postMessage = async () => {
             if (t.value.trim() === '') return; // Evita enviar mensajes vacíos
@@ -131,6 +170,7 @@
 
             t.value = ''; // Limpia el área de texto después de enviar
             await getMessages();
+            styleMessageBubbles();
         };
         b.addEventListener('click', postMessage);
         toggleThemeBtn.addEventListener('click', toggleTheme);
@@ -141,7 +181,7 @@
         t.addEventListener('keydown', (e) => {
             if (e.key === 'Enter' && !e.shiftKey) { // Permite el envío con Enter
                 e.preventDefault(); // Evita el salto de línea predeterminado en el textarea
-                postMessage(); // Llama a la función de enviar mensaje
+                postMessage();
             }
         });
         
@@ -166,6 +206,32 @@
         function toggleTheme() {
             const currentTheme = localStorage.getItem('theme') === 'dark' ? 'light' : 'dark';
             applyTheme(currentTheme);
+        }
+
+        function styleMessageBubbles() {
+            const messages = document.querySelectorAll('#messages li');
+            messages.forEach((msg) => {
+                // Simula la identificación del remitente para aplicar estilos diferenciados
+                const isUserMessage = msg.textContent.startsWith('Kou:'); // Asume que los mensajes del usuario comienzan con 'Kou:'
+            
+                // Estilos comunes para todas las burbujas
+                msg.style.borderRadius = '20px';
+                msg.style.padding = '10px 20px';
+                msg.style.marginBottom = '10px';
+                msg.style.maxWidth = '60%';
+                msg.style.wordBreak = 'break-word';
+
+                // Estilos diferenciados para mensajes del usuario y otros mensajes
+                if (isUserMessage) {
+                    msg.style.backgroundImage = 'linear-gradient(120deg, #6ee7b7 0%, #3b82f6 100%)'; // Color de fondo para el usuario
+                    msg.style.marginLeft = 'auto';
+                    msg.style.marginRight = '10px';
+                } else {
+                    msg.style.backgroundImage = 'linear-gradient(120deg, #fda085 0%, #f6d365 100%)'; // Color de fondo para otros mensajes
+                    msg.style.marginLeft = '10px';
+                    msg.style.marginRight = 'auto';
+                }
+            });
         }
 
         // Aplicar el tema guardado al cargar la página
